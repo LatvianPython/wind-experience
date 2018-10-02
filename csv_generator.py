@@ -25,39 +25,38 @@ def get_data():
             # they send back invalid JSON, thus we just remove that part
             temp_json = json.loads(response.content.decode('utf-8').replace('"success":true,', ''))
 
-            with open(json_file_name, mode='w', encoding='utf-8') as file:
-                file.write(json.dumps(temp_json))
+            with open(json_file_name, mode='w', encoding='utf-8') as json_file:
+                json_file.write(json.dumps(temp_json))
     else:
-        with open(json_file_name, mode='r', encoding='utf-8') as file:
-            temp_json = json.loads(file.read())
-    return temp_json['data']
+        with open(json_file_name, mode='r', encoding='utf-8') as json_file:
+            temp_json = json.loads(json_file.read())
+    return temp_json['data']['values']
 
-
-# site provides its data types only in german
-with open('translation_config.json', mode='r', encoding='utf-8') as translation_file:
-    translation = json.loads(translation_file.read())
 
 if __name__ == '__main__':
-    json_data = get_data()
+    # site provides its data types only in german
+    with open('translation_config.json', mode='r', encoding='utf-8') as translation_file:
+        translation = json.loads(translation_file.read())
 
-    data_set = json_data['values']
+    data_set = get_data()
 
     main_data = {}
 
-    for data_type, type_info in translation.items():
+    for json_key, csv_key in translation.items():
         # data set is organized per data type, sometimes there is no data for a specific hour for all types
-        for reading in data_set[data_type]:
+        for reading in data_set[json_key]:
+            # x: date  y: value
             try:
-                main_data[reading['x']][type_info] = reading['y']
+                main_data[reading['x']][csv_key] = reading['y']
             except KeyError:
                 data = {k: 0 for k in translation.values()}
                 data['measurement_date'] = reading['x']
-                data[type_info] = reading['y']
+                data[csv_key] = reading['y']
                 main_data[reading['x']] = data
 
-    with open(csv_file_name, mode='w', encoding='utf-8', newline='') as output_file:
+    with open(csv_file_name, mode='w', encoding='utf-8', newline='') as csv_file:
         fieldnames = ['measurement_date'] + [k for k in translation.values()]
-        writer = csv.DictWriter(output_file, fieldnames=fieldnames)
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
         writer.writeheader()
         writer.writerows(main_data.values())
