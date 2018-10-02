@@ -36,27 +36,28 @@ def get_data():
 if __name__ == '__main__':
     # site provides its data types only in german
     with open('translation_config.json', mode='r', encoding='utf-8') as translation_file:
+        # "dataTypeInfos" from JSON was used to construct translation_file
         translation = json.loads(translation_file.read())
 
     data_set = get_data()
 
-    main_data = {}
+    readings = {}
 
     for json_key, csv_key in translation.items():
         # data set is organized per data type, sometimes there is no data for a specific hour for all types
         for reading in data_set[json_key]:
             # x: date  y: value
             try:
-                main_data[reading['x']][csv_key] = reading['y']
+                readings[reading['x']][csv_key] = reading['y']
             except KeyError:
-                data = {k: 0 for k in translation.values()}
-                data['measurement_date'] = reading['x']
-                data[csv_key] = reading['y']
-                main_data[reading['x']] = data
+                new_reading = {k: 0 for k in translation.values()}
+                new_reading['measurement_date'] = reading['x']
+                new_reading[csv_key] = reading['y']
+                readings[reading['x']] = new_reading
 
     with open(csv_file_name, mode='w', encoding='utf-8', newline='') as csv_file:
         fieldnames = ['measurement_date'] + [k for k in translation.values()]
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter='\t')
 
         writer.writeheader()
-        writer.writerows(main_data.values())
+        writer.writerows(readings.values())
