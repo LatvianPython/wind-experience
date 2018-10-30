@@ -1,2 +1,2 @@
 # wind-experience
-Python + R for determining under which conditions Uffenheim would be using green energy
+Python + R (a little bit) for creating a model to predict when Uffenheim would be using green energy
