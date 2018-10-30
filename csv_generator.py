@@ -11,8 +11,8 @@ csv_file_name = '{}.csv'.format(file_name)
 
 # format: yyyy-mm-dd
 # how much data to request
-time_frame = {'from': '2018-08-01',
-              'to': '2018-08-31'}
+time_frame = {'from': '2018-01-01',
+              'to': '2018-11-01'}
 
 # api link
 link = 'https://www.wind-erleben.de/ajaxdata/data/all/{}/{}/'.format(time_frame['from'], time_frame['to'])
