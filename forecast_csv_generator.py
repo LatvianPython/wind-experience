@@ -16,8 +16,9 @@ def parse_reading(reading, file_name):
         if data_mapping[i] is not None:
             converted_reading[data_mapping[i]] = reading['c'][i]['h']
             if data_mapping[i] == 'time':
-                converted_reading[data_mapping[i]] = str(reading_date +
-                                                         timedelta(hours=int(converted_reading[data_mapping[i]][:2])))
+                hours = int(converted_reading[data_mapping[i]][:2])
+                minutes = int(converted_reading[data_mapping[i]][3:5])
+                converted_reading[data_mapping[i]] = str(reading_date + timedelta(hours=hours, minutes=minutes))
             elif data_mapping[i] == 'temperature':
                 temperature = str(converted_reading[data_mapping[i]]).replace('&nbsp;', ' ')
                 temperature = int(temperature[:temperature.find(' ')])
