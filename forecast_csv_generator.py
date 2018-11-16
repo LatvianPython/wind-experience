@@ -30,7 +30,7 @@ def parse_reading(reading, file_name):
                 elif wind_speed == 'No wind':
                     converted_reading[data_mapping[i]] = 0
                 else:
-                    wind_speed = int(wind_speed[:wind_speed.find(' m/s')])
+                    wind_speed = int(wind_speed[:wind_speed.find(' km/h')])
                     converted_reading[data_mapping[i]] = wind_speed
             elif data_mapping[i] == 'pressure':
                 pressure = converted_reading[data_mapping[i]]

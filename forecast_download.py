@@ -13,6 +13,8 @@ def main():
 
     session = requests.session()
 
+    cookies = {'TIMEANDDATE': 'fud_1:fup_1:fut_1:fuw_1:fur_1'}
+
     start_date = date(2018, 3, 1)
 
     days_to_download = abs(start_date - date.today()).days
@@ -32,7 +34,7 @@ def main():
               'n=@2820423&mode=historic&' \
               'hd={}&month={}&year={}&json=1'.format(date_str, current_date.month, current_date.year)
 
-        response = session.get(url=url)
+        response = session.get(url=url, cookies=cookies)
 
         raw_data = response.content.decode('utf-8')
         if response.status_code != 200:
