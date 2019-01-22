@@ -1,0 +1,21 @@
+{
+    "20": "solar_generation_kw",
+    "21": "power_use_kw",
+    "26": "wind_generation_kw",
+    "27": "wind_direction_degrees",
+    "28": "wind_speed_m_s",
+    "29": "pitch_degrees",
+    "30": "rotor_speed_rpm",
+    "31": "rotation_gondola_degrees",
+    "32": "charging_station_w",
+    "33": "battery_drain_or_load_w",
+    "34": "state_of_charge_percent",
+    "35": "battery_voltage_v",
+    "36": "rlm_solar_kw",
+    "37": "slp_solar_kw",
+    "38": "chp_kw",
+    "39": "electricity_purchase_kw",
+    "40": "power_backfeed_kw",
+    "41": "total_production_kw",
+    "42": "reference_kw"
+}
