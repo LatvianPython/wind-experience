@@ -4,7 +4,9 @@ import time
 import requests
 import multiprocessing
 import pathlib
-from typing import List, Tuple
+from typing import List
+from typing import Tuple
+from typing import Dict
 from joblib import delayed
 from joblib import Parallel
 from datetime import date
@@ -21,7 +23,7 @@ def next_date(start_date=date(2018, 3, 1)):
         start_date = start_date + timedelta(days=1)
 
 
-def download_all(inputs: List[Tuple[pathlib.Path, str]]):
+def download_all(inputs: List[Tuple[pathlib.Path, str]], cookies: Dict=None):
     session = requests.session()
 
     def download_single_link(file_path: pathlib.Path, url):
@@ -34,7 +36,7 @@ def download_all(inputs: List[Tuple[pathlib.Path, str]]):
             return
 
         try:
-            response = session.get(url=url)
+            response = session.get(url=url, cookies=cookies)
         except TimeoutError:
             logger.critical('{} Timeout Error'.format(thread_nr))
             return
