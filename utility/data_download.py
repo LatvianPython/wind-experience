@@ -7,9 +7,18 @@ import pathlib
 from typing import List, Tuple
 from joblib import delayed
 from joblib import Parallel
+from datetime import date
+from datetime import timedelta
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
+
+
+def next_date(start_date=date(2018, 3, 1)):
+    days_to_download = abs(start_date - date.today()).days
+    for date_offset in range(days_to_download):
+        yield start_date
+        start_date = start_date + timedelta(days=1)
 
 
 def download_all(inputs: List[Tuple[pathlib.Path, str]]):

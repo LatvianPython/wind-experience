@@ -1,6 +1,6 @@
 from pathlib import Path
 from download import uffenheim
-from utility.mass_download import download_all
+from utility.data_download import download_all
 
 
 def main():
