@@ -1,0 +1,1 @@
+from parsing.uffenheim import parse_data as uffenheim

@@ -1,0 +1,3 @@
+from download_url_generator.uffenheim import download_links as uffenheim
+from download_url_generator.wunderground import download_links as wunderground
+from download_url_generator.timeanddate import download_links as timeanddate
