@@ -1,5 +1,6 @@
 from pathlib import Path
 from download import uffenheim
+from download import wunderground
 from download import timeanddate
 from utility.data_download import download_all
 
@@ -9,6 +10,9 @@ def main():
 
     uffenheim_links = uffenheim.download_links(base_path=base_data_dir / 'uffenheim')
     download_all(inputs=uffenheim_links)
+
+    wunderground_links = wunderground.download_links(base_path=base_data_dir / 'wunderground')
+    download_all(inputs=wunderground_links)
 
     timeanddate_cookies = {'TIMEANDDATE': 'fud_1:fup_1:fut_1:fuw_1:fur_1'}
     timeanddate_links = timeanddate.download_links(base_path=base_data_dir / 'timeanddate')
