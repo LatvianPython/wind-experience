@@ -1,6 +1,4 @@
 import logging
-import random
-import time
 import requests
 import multiprocessing
 import pathlib
@@ -23,7 +21,7 @@ def next_date(start_date=date(2018, 3, 1)):
         start_date = start_date + timedelta(days=1)
 
 
-def download_all(inputs: List[Tuple[pathlib.Path, str]], cookies: Dict=None):
+def download_all(inputs: List[Tuple[pathlib.Path, str]], cookies: Dict = None):
     session = requests.session()
 
     def download_single_link(file_path: pathlib.Path, url):
@@ -52,8 +50,6 @@ def download_all(inputs: List[Tuple[pathlib.Path, str]], cookies: Dict=None):
 
         with open(str(file_path), mode='w', encoding='utf-8') as output_file:
             output_file.write(content)
-
-        time.sleep(random.uniform(1, 2))
 
     num_cores = multiprocessing.cpu_count()
     Parallel(n_jobs=num_cores)(delayed(download_single_link)(*j) for j in inputs)
