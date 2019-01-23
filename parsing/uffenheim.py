@@ -1,5 +1,6 @@
 import csv
 import json
+from pathlib import Path
 
 # site provides its data types only in german, here are the translations
 translation = {
@@ -25,7 +26,7 @@ translation = {
 }
 
 
-def parse_data(raw_data_path, parsed_data_path):
+def parse_data(raw_data_path: Path, parsed_data_path: Path):
     files = [file
              for file in raw_data_path.glob('*.json')
              if file.is_file()]
