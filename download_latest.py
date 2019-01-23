@@ -1,33 +1,36 @@
 from pathlib import Path
-import download_url_generator
-import parsing
 from utility import download_all
+from tqdm import tqdm
 
 
 def main():
-    # todo: make sure dirs are created if they do not exist!
-    # todo: add some way to track progress, progressbar?
-    # fixme: a lot of repeating myself is going on here, make more simple!
     current_working_directory = Path().cwd()
     base_data_dir = current_working_directory / 'data' / 'raw'
     parsed_data_dir = current_working_directory / 'data' / 'parsed'
 
-    uffenheim_links = download_url_generator.uffenheim(base_path=base_data_dir / 'uffenheim')
-    download_all(inputs=uffenheim_links)
+    base_data_dir.mkdir(parents=True, exist_ok=True)
+    parsed_data_dir.mkdir(parents=True, exist_ok=True)
 
-    wunderground_links = download_url_generator.wunderground(base_path=base_data_dir / 'wunderground')
-    download_all(inputs=wunderground_links)
+    data_sources = [('uffenheim', None),
+                    ('wunderground', None),
+                    ('timeanddate', {'TIMEANDDATE': 'fud_1:fup_1:fut_1:fuw_1:fur_1'})]
 
-    timeanddate_cookies = {'TIMEANDDATE': 'fud_1:fup_1:fut_1:fuw_1:fur_1'}
-    timeanddate_links = download_url_generator.timeanddate(base_path=base_data_dir / 'timeanddate')
-    download_all(inputs=timeanddate_links, cookies=timeanddate_cookies)
+    def download_and_parse():
+        for source, cookies in data_sources:
+            download_url_generator = getattr(__import__('download_url_generator', fromlist=[source]), source)
+            parsing_function = getattr(__import__('parsing', fromlist=[source]), source)
 
-    parsing.wunderground(raw_data_path=base_data_dir / 'wunderground',
-                         parsed_data_path=parsed_data_dir / 'wunderground.csv')
-    parsing.timeanddate(raw_data_path=base_data_dir / 'timeanddate',
-                        parsed_data_path=parsed_data_dir / 'timeanddate.csv')
-    parsing.uffenheim(raw_data_path=base_data_dir / 'uffenheim',
-                      parsed_data_path=parsed_data_dir / 'uffenheim.csv')
+            links = download_url_generator(base_data_dir / source)
+            yield 'Downloading data from {}'.format(source)
+            download_all(inputs=links, cookies=cookies)
+            yield 'Parsing data from {}'.format(source)
+            parsing_function(raw_data_path=base_data_dir / source,
+                             parsed_data_path=parsed_data_dir / (source + '.csv'))
+        yield 'Done!'
+
+    progress_bar = tqdm(download_and_parse(), total=len(data_sources) * 2 + 1)
+    for state in progress_bar:
+        progress_bar.set_postfix(step=state)
 
 
 if __name__ == '__main__':

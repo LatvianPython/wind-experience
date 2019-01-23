@@ -17,14 +17,16 @@ logger.addHandler(logging.NullHandler())
 
 
 def next_date(start_date=date(2018, 3, 1)):
-    days_to_download = abs(start_date - date.today()).days
+    days_to_download = abs(start_date - date.today()).days - 5
     for date_offset in range(days_to_download):
         yield start_date
         start_date = start_date + timedelta(days=1)
 
 
-def download_all(inputs: List[Tuple[pathlib.Path, str]], cookies: Dict=None):
+def download_all(inputs: List[Tuple[pathlib.Path, str]], cookies: Dict):
     session = requests.session()
+
+    inputs[0][0].parent.mkdir(parents=True, exist_ok=True)
 
     def download_single_link(file_path: pathlib.Path, url):
         thread_nr = multiprocessing.current_process().name

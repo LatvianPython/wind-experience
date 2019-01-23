@@ -60,7 +60,10 @@ def parse_data(raw_data_path: Path, parsed_data_path: Path):
     for file in files:
         with open(file, mode='r', encoding='utf-8') as data:
             raw_data = data.read()
-            raw_data = re.sub('([[",][,{])(.+?)([:\["])', '\g<1>"\g<2>"\g<3>', raw_data)
+            regex = re.compile("""([\[",][,{])  # example match of regex: [{c:
+                                  ([a-z])       # identifier that will be enclosed in double quotes later
+                                  ([:\["])      # """, re.VERBOSE)
+            raw_data = regex.sub('\g<1>"\g<2>"\g<3>', raw_data)
             full_data_set += [parse_reading(d, file.stem) for d in json.loads(raw_data)]
 
     with open(parsed_data_path, mode='w', encoding='utf-8', newline='') as csv_file:
