@@ -1,5 +1,5 @@
 from pathlib import Path
-from utility.data_download import next_date
+from utility import next_date
 
 
 def download_links(base_path):
