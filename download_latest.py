@@ -4,10 +4,12 @@ from tqdm import tqdm
 
 
 def main():
-    # todo: make sure dirs are created if they do not exist!
     current_working_directory = Path().cwd()
     base_data_dir = current_working_directory / 'data' / 'raw'
     parsed_data_dir = current_working_directory / 'data' / 'parsed'
+
+    base_data_dir.mkdir(parents=True, exist_ok=True)
+    parsed_data_dir.mkdir(parents=True, exist_ok=True)
 
     data_sources = [('uffenheim', None),
                     ('wunderground', None),
@@ -18,7 +20,7 @@ def main():
             download_url_generator = getattr(__import__('download_url_generator', fromlist=[source]), source)
             parsing_function = getattr(__import__('parsing', fromlist=[source]), source)
 
-            links = download_url_generator(base_data_dir)
+            links = download_url_generator(base_data_dir / source)
             yield 'Downloading data from {}'.format(source)
             download_all(inputs=links, cookies=cookies)
             yield 'Parsing data from {}'.format(source)
