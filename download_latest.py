@@ -5,6 +5,8 @@ from utility.data_download import download_all
 
 
 def main():
+    # todo: add some way to track progress, progressbar?
+    # fixme: a lot of repeating myself is going on here, make more simple!
     current_working_directory = Path().cwd()
     base_data_dir = current_working_directory / 'data' / 'raw'
     parsed_data_dir = current_working_directory / 'data' / 'parsed'
@@ -19,6 +21,8 @@ def main():
     timeanddate_links = download_url_generator.timeanddate(base_path=base_data_dir / 'timeanddate')
     download_all(inputs=timeanddate_links, cookies=timeanddate_cookies)
 
+    parsing.wunderground(raw_data_path=base_data_dir / 'wunderground',
+                         parsed_data_path=parsed_data_dir / 'wunderground.csv')
     parsing.timeanddate(raw_data_path=base_data_dir / 'timeanddate',
                         parsed_data_path=parsed_data_dir / 'timeanddate.csv')
     parsing.uffenheim(raw_data_path=base_data_dir / 'uffenheim',
