@@ -23,7 +23,7 @@ def next_date(start_date=date(2018, 3, 1)):
         start_date = start_date + timedelta(days=1)
 
 
-def download_all(inputs: List[Tuple[pathlib.Path, str]], cookies: Dict=None):
+def download_all(inputs: List[Tuple[pathlib.Path, str]], cookies: Dict):
     session = requests.session()
 
     def download_single_link(file_path: pathlib.Path, url):
