@@ -1,5 +1,6 @@
 from pathlib import Path
 from utility import download_all
+import tqdm
 
 
 def main():
