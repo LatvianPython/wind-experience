@@ -5,7 +5,9 @@ from utility.data_download import download_all
 
 
 def main():
+    # todo: make sure dirs are created if they do not exist!
     # todo: add some way to track progress, progressbar?
+    # todo: add an __init__ for utility!
     # fixme: a lot of repeating myself is going on here, make more simple!
     current_working_directory = Path().cwd()
     base_data_dir = current_working_directory / 'data' / 'raw'
