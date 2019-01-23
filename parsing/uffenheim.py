@@ -25,7 +25,7 @@ translation = {
     '42': 'reference_kw'
 }
 
-
+@profile
 def parse_data(raw_data_path: Path, parsed_data_path: Path):
     files = [file
              for file in raw_data_path.glob('*.json')
@@ -51,9 +51,9 @@ def parse_data(raw_data_path: Path, parsed_data_path: Path):
                     new_reading[csv_key] = reading['y']
                     readings[reading['x']] = new_reading
 
-        with open(parsed_data_path, mode='w', encoding='utf-8', newline='') as csv_file:
-            fieldnames = ['measurement_date'] + list(translation.values())
-            writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter='\t')
+    with open(parsed_data_path, mode='w', encoding='utf-8', newline='') as csv_file:
+        fieldnames = ['measurement_date'] + list(translation.values())
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter='\t')
 
-            writer.writeheader()
-            writer.writerows(readings.values())
+        writer.writeheader()
+        writer.writerows(readings.values())

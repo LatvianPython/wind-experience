@@ -3,6 +3,7 @@ import requests
 import multiprocessing
 import pathlib
 from typing import List
+from typing import Optional
 from typing import Tuple
 from typing import Dict
 from joblib import delayed
@@ -21,7 +22,7 @@ def next_date(start_date=date(2018, 3, 1)):
         start_date = start_date + timedelta(days=1)
 
 
-def download_all(inputs: List[Tuple[pathlib.Path, str]], cookies: Dict):
+def download_all(inputs: List[Tuple[pathlib.Path, str]], cookies: Optional[Dict]):
     session = requests.session()
 
     inputs[0][0].parent.mkdir(parents=True, exist_ok=True)
